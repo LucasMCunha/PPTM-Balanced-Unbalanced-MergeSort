@@ -32,7 +32,7 @@
 
 extern double get_time (void);
 void merge (int a[], int size, int temp[]);
-void insertion_sort (int a[], int size);
+void BubbleSort (int a[], int size);
 void mergesort_serial (int a[], int size, int temp[]);
 void mergesort_parallel_mpi (int a[], int size, int temp[], int level, int my_rank, int workableLoad, int max_rank, int tag, MPI_Comm comm);
 int my_topmost_level_mpi (int my_rank);
@@ -194,7 +194,7 @@ mergesort_serial (int a[], int size, int temp[]) {
   // Switch to insertion sort for small arrays
   if (size <= SMALL)
     {
-      insertion_sort (a, size);
+      BubbleSort (a, size);
       return;
     }
   mergesort_serial (a, size / 2, temp);
@@ -238,18 +238,16 @@ merge (int a[], int size, int temp[]) {
   memcpy (a, temp, size * sizeof (int));
 }
 
-void
-insertion_sort (int a[], int size) {
-  int i;
-  for (i = 0; i < size; i++)
-    {
-      int j, v = a[i];
-      for (j = i - 1; j >= 0; j--)
-	{
-	  if (a[j] <= v)
-	    break;
-	  a[j + 1] = a[j];
-	}
-      a[j + 1] = v;
+void BubbleSort(int a[], int size) {
+  int i, j, temp;
+  for (i = 0; i < size - 1; i++) {
+    for (j = 0; j < size - i - 1; j++) {
+      if (a[j] > a[j + 1]) {
+        // Swap a[j] and a[j+1]
+        temp = a[j];
+        a[j] = a[j + 1];
+        a[j + 1] = temp;
+      }
     }
+  }
 }
